@@ -1,66 +1,3 @@
-// import React, { useState, useContext } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { AuthContext } from '../../context/AuthContext';
-// import api from '../../api/api';
-
-// const Login = () => {
-//   const [credentials, setCredentials] = useState({
-//     email: '',
-//     password: '',
-//   });
-//   const { login } = useContext(AuthContext);
-//   const navigate = useNavigate();
-
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setCredentials({ ...credentials, [name]: value });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       await login(credentials);
-//       navigate('/dashboard'); // Redirect to the dashboard on successful login
-//     } catch (error) {
-//       alert('Login failed. Please check your credentials and try again.');
-//     }
-//   };
-
-//   return (
-//     <div className='container mt-5'>
-//       <h2>Login</h2>
-//       <form onSubmit={handleSubmit} className='mt-3'>
-//         <div className='mb-3'>
-//           <label className='form-label'>Email</label>
-//           <input
-//             type='email'
-//             name='email'
-//             className='form-control'
-//             value={credentials.email}
-//             onChange={handleChange}
-//             required
-//           />
-//         </div>
-//         <div className='mb-3'>
-//           <label className='form-label'>Password</label>
-//           <input
-//             type='password'
-//             name='password'
-//             className='form-control'
-//             value={credentials.password}
-//             onChange={handleChange}
-//             required
-//           />
-//         </div>
-//         <button type='submit' className='btn btn-primary'>Login</button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default Login;
-
-
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
@@ -80,8 +17,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(credentials);
-      navigate('/dashboard'); // Redirect to the dashboard on successful login
+      await login(credentials, navigate);
+      navigate('/edit-profile'); // Redirect to the dashboard on successful login
     } catch (error) {
       alert('Login failed. Please check your credentials and try again.');
     }

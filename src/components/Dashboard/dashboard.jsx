@@ -1,39 +1,60 @@
-import React from 'react';
-import { useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext';
-import { Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../Context/AuthContext';
+import api from '../../api/api';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
+  const [jobs, setJobs] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch personalized job listings
+    const fetchJobs = async () => {
+      try {
+        const response = await api.get('/jobs');
+        setJobs(response.data);
+      } catch (error) {
+        console.error('Failed to fetch jobs:', error);
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  if (!user) return <p>Loading...</p>;
 
   return (
-    <div className='container mt-5'>
-      <h1 className='mb-4'>Welcome to Your Dashboard</h1>
-      {user ? (
-        <>
-          <div className='card p-3'>
-            <h2>Hello, {user.name}!</h2>
-            <p>Email: {user.email}</p>
-            <p>Role: {user.role}</p>
-          </div>
+    <div className="container mt-5">
+      <div className="card p-4 shadow-lg">
+        <h2>Welcome, {user.name}!</h2>
+        <p>Role: {user.role}</p>
 
-          <div className='mt-4'>
-            <h3>Quick Actions</h3>
-            <ul>
-              <li><Link to='/profile'>View Profile</Link></li>
-              <li><Link to='/jobs'>Browse Jobs</Link></li>
-              <li><Link to='/logout'>Logout</Link></li>
-            </ul>
-          </div>
-        </>
-      ) : (
-        <p>Please log in to access your dashboard.</p>
-      )}
+        <h3>Job Listings</h3>
+        {jobs.length > 0 ? (
+          <ul>
+            {jobs.map((job) => (
+              <li key={job._id}>
+                <h4>{job.title}</h4>
+                <p>{job.description}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No job listings found.</p>
+        )}
+
+        <button onClick={handleLogout} className="btn btn-danger">
+          Logout
+        </button>
+      </div>
     </div>
   );
 };
 
 export default Dashboard;
-
-// Let me know if you want me to add job listings or more role-based content! 🛠️
