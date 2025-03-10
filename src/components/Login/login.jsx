@@ -17,12 +17,18 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(credentials, navigate);
-      navigate('/edit-profile'); // Redirect to the dashboard on successful login
+      await login(credentials);
+      const token = localStorage.getItem('authToken'); // Check if token is stored
+      if (token) {
+        navigate('/'); // Redirect only if token exists
+      } else {
+        alert('Login failed. No token received.');
+      }
     } catch (error) {
       alert('Login failed. Please check your credentials and try again.');
     }
   };
+  
 
   return (
     <div 

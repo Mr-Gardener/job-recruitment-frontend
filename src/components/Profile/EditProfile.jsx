@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext.jsx';
+import { AuthContext } from '../../Context/AuthContext.jsx';
 import api from '../../api/api';
 
 const EditProfile = () => {
   const { user, updateProfile } = useContext(AuthContext); // ✅ Get user from AuthContext
+  
 
   if (!user) {
     return <p>Loading...</p>; // Prevents error when user is not yet available
@@ -25,12 +26,9 @@ const EditProfile = () => {
     setFormData({ ...formData, profilePicture: e.target.files[0] });
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   updateProfile(formData);
-  // };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formDataObj = new FormData();
     formDataObj.append('name', formData.name);
@@ -39,16 +37,21 @@ const EditProfile = () => {
     if (formData.profilePicture) {
       formDataObj.append('profilePicture', formData.profilePicture);
     }
-    updateProfile(formDataObj);
-
-      // Refresh user data
-  const updatedToken = localStorage.getItem('authToken');
-  if (updatedToken) {
-    api.defaults.headers.common['Authorization'] = `Bearer ${updatedToken}`;
-    window.location.reload(); // Force reload to reinitialize context
-  }
-
+  
+    try {
+      const updatedUser = await updateProfile(formDataObj);
+      if (updatedUser) {
+        setUser(updatedUser); // Update context with new user data
+        window.location.href = '/profile'; // Redirect to profile page
+      }
+    } catch (error) {
+      console.error('Profile update failed:', error);
+    }
   };
+  
+  
+
+  
   
   
 

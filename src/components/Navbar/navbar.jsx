@@ -2,13 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './navbar.css';
 import { BsSearch } from 'react-icons/bs';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 
 
 
 
 const Navbar = ({ jobListings }) => {
     const [searchTerm, setSearchTerm] = useState('');
+    const { user, logout } = useContext(AuthContext); // Access user and logout from AuthContext
   
     const handleSearchChange = (event) => {
       setSearchTerm(event.target.value);
@@ -23,8 +25,14 @@ const Navbar = ({ jobListings }) => {
             <div className='navigate'>
                 <h1><Link className='logo' to="/">Job Query</Link></h1>
                 <nav>
-                    <Link className='jobPost' to="/">Post a remote Job</Link>
-                    <Link className='login' to="/login">Login</Link>
+                <Link className="jobPost" to="/post-job">Post a remote Job</Link>
+          
+                    {/* Conditionally render Login/Profile button */}
+                {user ? (
+                <Link className="login" to="/profile">Profile</Link> // Redirect to profile page
+                ) : (
+                <Link className="login" to="/login">Login</Link> // Redirect to login page if not logged in
+                )}
                 </nav>
             </div>    
             <div className='hero'>
