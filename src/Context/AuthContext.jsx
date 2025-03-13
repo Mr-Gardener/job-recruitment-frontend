@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import api from '../api/api';
 import { useNavigate } from 'react-router-dom';
-// const api = axios.create({ baseURL: 'http://localhost:5000/api' });
 
 
 const AuthContext = createContext();
@@ -11,22 +10,6 @@ export const AuthProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-  // Load user profile on initial render
-// useEffect(() => {
-//   const storedToken = localStorage.getItem('authToken');
-//   if (storedToken) {
-//     api.get('/auth/profile')
-//       .then((response) => {
-//         setUser(response.data);
-//       })
-//       .catch((error) => {
-//         console.error('Failed to load user profile:', error);
-//         localStorage.removeItem('authToken'); // Clean up invalid token
-//       });
-//   }
-// }, []);
-
-  
 useEffect(() => {
   const storedToken = localStorage.getItem('authToken');
   if (storedToken) {
@@ -36,12 +19,13 @@ useEffect(() => {
       })
       .catch((error) => {
         console.error('Failed to load user profile:', error);
-        localStorage.removeItem('authToken'); // Clean up invalid token
+        localStorage.removeItem('authToken'); 
       });
+  } else {
+    setUser(null); // Clear user state if no token (so public JobList pages load properly)
   }
 }, []);
 
-  
 
 
   const login = async (credentials) => {
@@ -70,7 +54,7 @@ const updateProfile = async (formData) => {
     const response = await api.put('/profile', formData, {
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data', // If you're sending images
+        'Content-Type': 'multipart/form-data', // If you're sending images, useful for resume on job application
       },
     });
 

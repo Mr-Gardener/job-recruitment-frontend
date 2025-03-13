@@ -13,5 +13,3 @@ const ProtectedRoute = ({ children }) => {
 };
 
 export default ProtectedRoute;
-
-// This will make sure only authenticated users can access protected routes, like the dashboard.

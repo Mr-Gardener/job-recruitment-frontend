@@ -12,6 +12,8 @@ import JobList from './components/Job-listing/jobList';
 import PostJobForm from './components/Job-listing/postJob';
 import JobDetails from './components/Job-listing/jobDetails';
 import { useAuth } from './context/AuthContext';
+import JobApplicationForm from './components/JobApplication/jobApplicationForm';
+
 
 
 
@@ -43,6 +45,13 @@ function App() {
               element={
                 <ProtectedRoute user={user} requiredRole="employer">
                   <PostJobForm />
+                </ProtectedRoute>
+              } 
+            />
+            <Route path="/apply/:jobId" 
+              element={
+                <ProtectedRoute>
+                  <JobApplicationForm />
                 </ProtectedRoute>
               } 
             />

@@ -3,7 +3,7 @@ import { AuthContext } from '../../Context/AuthContext.jsx';
 import api from '../../api/api';
 
 const EditProfile = () => {
-  const { user, updateProfile } = useContext(AuthContext); // ✅ Get user from AuthContext
+  const { user, updateProfile } = useContext(AuthContext); //  Get user from AuthContext
   
 
   if (!user) {

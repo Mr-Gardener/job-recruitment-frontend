@@ -29,9 +29,9 @@ const Navbar = ({ jobListings }) => {
           
                     {/* Conditionally render Login/Profile button */}
                 {user ? (
-                <Link className="login" to="/profile">Profile</Link> // Redirect to profile page
+                <Link className="login" to="/profile">Profile</Link> // if logged in, displays profile button
                 ) : (
-                <Link className="login" to="/login">Login</Link> // Redirect to login page if not logged in
+                <Link className="login" to="/login">Login</Link> // if not logged in, displays login button
                 )}
                 </nav>
             </div>    
